@@ -3,6 +3,12 @@ library(plumber)
 library(Biostrings)
 library(jsonlite)
 
+#* Serve the HTML documentation page
+#* @get /
+function(res) {
+  include_html("index.html")
+}
+
 #* Health check endpoint
 #* @get /healthz
 function() {

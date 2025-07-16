@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RNA Analyzer API</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; line-height: 1.6; }
+        .header { background: #f4f4f4; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
+        .endpoint { background: #e8f5e8; padding: 15px; margin: 10px 0; border-radius: 5px; border-left: 4px solid #4CAF50; }
+        .method { background: #007bff; color: white; padding: 4px 8px; border-radius: 3px; font-size: 12px; }
+        pre { background: #f8f9fa; padding: 15px; border-radius: 5px; overflow-x: auto; }
+        code { background: #f1f1f1; padding: 2px 5px; border-radius: 3px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🧬 RNA Analyzer API</h1>
+        <p>A powerful bioinformatics API for analyzing DNA/RNA sequences and finding pattern matches using Bioconductor.</p>
+    </div>
+
+    <h2>📋 Available Endpoints</h2>
+
+    <div class="endpoint">
+        <h3><span class="method">GET</span> /healthz</h3>
+        <p><strong>Description:</strong> Health check endpoint to verify the API is running.</p>
+        <p><strong>Example:</strong></p>
+        <pre>curl https://rna-analyzer.onrender.com/healthz</pre>
+    </div>
+
+    <div class="endpoint">
+        <h3><span class="method">POST</span> /analyze</h3>
+        <p><strong>Description:</strong> Analyze DNA/RNA sequences for pattern matches.</p>
+        <p><strong>Parameters:</strong></p>
+        <ul>
+            <li><code>sequence</code> - The DNA/RNA sequence to analyze</li>
+            <li><code>query</code> - The pattern to search for</li>
+        </ul>
+        <p><strong>Example Request:</strong></p>
+        <pre>curl -X POST https://rna-analyzer.onrender.com/analyze \
+  -H "Content-Type: application/json" \
+  -d '{"sequence":"AGCTAGCTAGCTAGCT","query":"AGCT"}'</pre>
+        
+        <p><strong>Example Response:</strong></p>
+        <pre>{
+  "sequence_length": 16,
+  "query": "AGCT",
+  "match_count": 4,
+  "match_positions": [1, 5, 9, 13]
+}</pre>
+    </div>
+
+    <h2>🧪 Try It Out</h2>
+    <p>Use tools like <strong>curl</strong>, <strong>Postman</strong>, or any HTTP client to interact with the API.</p>
+    
+    <h2>💡 Use Cases</h2>
+    <ul>
+        <li>Find restriction enzyme cut sites</li>
+        <li>Locate primer binding sites</li>
+        <li>Search for specific motifs</li>
+        <li>Analyze repetitive sequences</li>
+        <li>Bioinformatics research and education</li>
+    </ul>
+
+    <h2>⚡ Powered By</h2>
+    <ul>
+        <li><strong>R</strong> - Statistical computing language</li>
+        <li><strong>Bioconductor</strong> - Bioinformatics packages</li>
+        <li><strong>Biostrings</strong> - Efficient string matching</li>
+        <li><strong>Plumber</strong> - R web API framework</li>
+    </ul>
+</body>
+</html>
