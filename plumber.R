@@ -1,24 +1,27 @@
-# plumber.R
-
-library(methods)       # <— ADD THIS LINE
+﻿# plumber.R
+library(methods)
 library(plumber)
 library(Biostrings)
 library(jsonlite)
 
-#* @apiTitle RNA Analyzer API
+#* Health check endpoint
+#* @get /healthz
+function() {
+  list(status = "OK", message = "RNA Analyzer is running!")
+}
 
+#* @apiTitle RNA Analyzer API
 #* Analyze RNA sequence and return match counts
 #* @post /analyze
 #* @serializer json
 function(req, res) {
   tryCatch({
-    body <- fromJSON(req$postBody)
-    
-    sequence <- toupper(body$sequence)
-    query <- toupper(body$query)
+    body <- fromJSON(req)
+    sequence <- toupper(body)
+    query <- toupper(body)
     
     if (is.null(sequence) || is.null(query) || sequence == "" || query == "") {
-      res$status <- 400
+      res <- 400
       return(list(error = "Both 'sequence' and 'query' must be provided."))
     }
     
@@ -28,14 +31,13 @@ function(req, res) {
     matches <- matchPattern(pattern, subject)
     
     return(list(
-      sequence_length = width(subject),
+      sequence_length = length(subject),
       query = query,
       match_count = length(matches),
       match_positions = start(matches)
     ))
-    
   }, error = function(e) {
-    res$status <- 500
-    return(list(error = paste("Internal server error:", e$message)))
+    res <- 500
+    return(list(error = paste("Internal server error:", e)))
   })
 }
