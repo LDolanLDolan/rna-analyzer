@@ -6,15 +6,10 @@ library(jsonlite)
 #* Serve the HTML documentation page
 #* @get /
 #* @serializer html
-function(res) {
-  # Read the HTML file and return it
-  if (file.exists("index.html")) {
-    html_content <- readLines("index.html", warn = FALSE)
-    return(paste(html_content, collapse = "\n"))
-  } else {
-    res$status <- 404
-    return("<h1>Documentation not found</h1>")
-  }
+function() {
+  # Read and return the HTML file
+  html_content <- readLines("index.html", warn = FALSE)
+  paste(html_content, collapse = "\n")
 }
 
 #* Health check endpoint
