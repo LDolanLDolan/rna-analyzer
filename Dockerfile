@@ -18,7 +18,9 @@ RUN apt-get update && apt-get install -y \
 
 # Install BiocManager and Biostrings
 RUN R -e "install.packages('BiocManager', repos='https://cloud.r-project.org')" \
- && R -e "BiocManager::install('Biostrings', ask = FALSE, update = FALSE)"
+ && R -e "BiocManager::install('Biostrings', ask = FALSE, update = FALSE)" \
+ && R -e "BiocManager::install('biomaRt', ask = FALSE, update = FALSE)"
+
 
 COPY . /app
 
