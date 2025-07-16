@@ -16,11 +16,9 @@ RUN apt-get update && apt-get install -y \
     libjpeg-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Install BiocManager and Biostrings
+# Install BiocManager and required Bioconductor packages
 RUN R -e "install.packages('BiocManager', repos='https://cloud.r-project.org')" \
- && R -e "BiocManager::install('Biostrings', ask = FALSE, update = FALSE)" \
- && R -e "BiocManager::install('biomaRt', ask = FALSE, update = FALSE)"
-
+ && R -e "BiocManager::install(c('Biostrings', 'biomaRt', 'AnnotationHub'), ask = FALSE, update = FALSE)"
 
 COPY . /app
 
