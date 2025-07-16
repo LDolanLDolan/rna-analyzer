@@ -1,21 +1,40 @@
+# plumber.R
+
 library(plumber)
-source("rna_utils.R")
+library(Biostrings)
+library(jsonlite)
 
-#* @apiTitle RNA Sequence Analysis API
-#* @apiDescription This API accepts a POST request with a JSON body containing an RNA sequence and returns analysis data.
+#* @apiTitle RNA Analyzer API
 
-#* Analyze RNA sequence
+#* Analyze RNA sequence and return match counts
 #* @post /analyze
-#* @json
-function(req) {
-  # Parse JSON from the request body
-  body <- jsonlite::fromJSON(req$postBody)
-  
-  if (is.null(body$sequence)) {
-    return(list(error = "Missing 'sequence' in request body"))
-  }
-  
-  # Call the analysis function
-  result <- analyze_rna(body$sequence)
-  return(result)
+#* @serializer json
+function(req, res) {
+  tryCatch({
+    body <- fromJSON(req$postBody)
+    
+    sequence <- toupper(body$sequence)
+    query <- toupper(body$query)
+    
+    if (is.null(sequence) || is.null(query) || sequence == "" || query == "") {
+      res$status <- 400
+      return(list(error = "Both 'sequence' and 'query' must be provided."))
+    }
+    
+    # Perform matching using Biostrings
+    subject <- DNAString(sequence)
+    pattern <- DNAString(query)
+    matches <- matchPattern(pattern, subject)
+    
+    return(list(
+      sequence_length = width(subject),
+      query = query,
+      match_count = length(matches),
+      match_positions = start(matches)
+    ))
+    
+  }, error = function(e) {
+    res$status <- 500
+    return(list(error = paste("Internal server error:", e$message)))
+  })
 }
