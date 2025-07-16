@@ -7,12 +7,6 @@
 
 ---
 
-# RNA Analyzer API
-
-** Live Demo:** [https://rna-analyzer.onrender.com/](https://rna-analyzer.onrender.com/)
-
----
-
 # RNA Sequence Analysis API
 
 This API, built with R and plumber, analyzes RNA sequences to provide:
