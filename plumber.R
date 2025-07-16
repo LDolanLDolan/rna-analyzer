@@ -1,4 +1,4 @@
-﻿library(methods)
+library(methods)
 library(plumber)
 library(Biostrings)
 library(jsonlite)
