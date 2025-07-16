@@ -7,9 +7,10 @@ library(jsonlite)
 #* @get /
 #* @serializer html
 function() {
-  # Read and serve the HTML file directly
+  # Read and serve the HTML file directly (fixed - no pipe operator)
   if (file.exists("index.html")) {
-    readLines("index.html", warn = FALSE) %>% paste(collapse = "\n")
+    html_lines <- readLines("index.html", warn = FALSE)
+    paste(html_lines, collapse = "\n")
   } else {
     "<h1>HTML file not found</h1>"
   }
