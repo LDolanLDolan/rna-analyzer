@@ -7,20 +7,20 @@
 
 ---
 
-# ðŸ§¬ RNA Analyzer API
+# RNA Analyzer API
 
-**ðŸŒ Live Demo:** [https://rna-analyzer.onrender.com/](https://rna-analyzer.onrender.com/)
+** Live Demo:** [https://rna-analyzer.onrender.com/](https://rna-analyzer.onrender.com/)
 
 ---
 
-# Ã°Å¸Â§Â¬ RNA Sequence Analysis API
+# RNA Sequence Analysis API
 
 This API, built with R and plumber, analyzes RNA sequences to provide:
 - Sequence length
 - GC content
 - Detected open reading frames (ORFs)
 
-## Ã°Å¸â€Â¬ Endpoint
+## Endpoint
 
 ### `GET /analyze?seq=RNA_SEQUENCE`
 Returns JSON with:
