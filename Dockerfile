@@ -1,7 +1,8 @@
-FROM rocker/plumber
+FROM rstudio/plumber:latest
+
+WORKDIR /app
 
 COPY . /app
-WORKDIR /app
 
 EXPOSE 8000
 
