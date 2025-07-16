@@ -2,6 +2,9 @@ FROM rstudio/plumber:latest
 
 WORKDIR /app
 
+# Install Bioconductor and Biostrings
+RUN R -e "if (!requireNamespace('BiocManager', quietly=TRUE)) install.packages('BiocManager'); BiocManager::install('Biostrings')"
+
 COPY . /app
 
 EXPOSE 8000
