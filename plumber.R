@@ -1,4 +1,4 @@
-library(methods)
+﻿library(methods)
 library(plumber)
 library(Biostrings)
 library(jsonlite)
@@ -7,7 +7,6 @@ library(jsonlite)
 #* @get /
 #* @serializer html
 function() {
-  # Read and serve the HTML file directly (fixed - no pipe operator)
   if (file.exists("index.html")) {
     html_lines <- readLines("index.html", warn = FALSE)
     paste(html_lines, collapse = "\n")
@@ -43,10 +42,10 @@ function(req, res) {
     matches <- matchPattern(pattern, subject)
     
     return(list(
-      sequence_length = length(subject),
-      query = query,
-      match_count = length(matches),
-      match_positions = start(matches)
+      sequence_length = as.numeric(length(subject)),
+      query = as.character(query),
+      match_count = as.numeric(length(matches)),
+      match_positions = as.numeric(start(matches))
     ))
   }, error = function(e) {
     res$status <- 500
