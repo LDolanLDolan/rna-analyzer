@@ -14,18 +14,9 @@
         button { background: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; }
         button:hover { background: #45a049; }
         button:disabled { background: #cccccc; cursor: not-allowed; }
-        .results { background: #f8f9fa; padding: 15px; border-radius: 5px; margin-top: 20px; font-family: monospace; }
-        .error { background: #ffebee; color: #c62828; }
-        .success { background: #e8f5e8; color: #2e7d32; }
-        .endpoint { background: #e8f5e8; padding: 15px; margin: 10px 0; border-radius: 5px; border-left: 4px solid #4CAF50; }
-        .method { background: #007bff; color: white; padding: 4px 8px; border-radius: 3px; font-size: 12px; }
-        pre { background: #f8f9fa; padding: 15px; border-radius: 5px; overflow-x: auto; }
-        code { background: #f1f1f1; padding: 2px 5px; border-radius: 3px; }
-        .tabs { display: flex; margin-bottom: 20px; }
-        .tab { background: #f0f0f0; border: none; padding: 10px 20px; cursor: pointer; border-radius: 4px 4px 0 0; margin-right: 5px; }
-        .tab.active { background: #4CAF50; color: white; }
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
+        .results { background: #f8f9fa; padding: 15px; border-radius: 5px; margin-top: 20px; }
+        .error { background: #ffebee; color: #c62828; padding: 15px; border-radius: 5px; }
+        .success { background: #e8f5e8; color: #2e7d32; padding: 15px; border-radius: 5px; }
     </style>
 </head>
 <body>
@@ -34,108 +25,39 @@
         <p>A powerful bioinformatics tool for analyzing DNA/RNA sequences and finding pattern matches</p>
     </div>
 
-    <div class="tabs">
-        <button class="tab active" onclick="showTab('analyzer')">🧪 Analyze Sequences</button>
-        <button class="tab" onclick="showTab('docs')">📋 API Documentation</button>
-    </div>
-
-    <div id="analyzer" class="tab-content active">
-        <div class="analyzer">
-            <h2>🔬 Sequence Analyzer</h2>
-            <p>Enter your DNA/RNA sequence and the pattern you want to find:</p>
-            
-            <div class="form-group">
-                <label for="sequence">DNA/RNA Sequence:</label>
-                <textarea id="sequence" rows="4" placeholder="Enter your sequence here (e.g., AGCTAGCTAGCTAGCT)">AGCTAGCTAGCTAGCT</textarea>
-            </div>
-            
-            <div class="form-group">
-                <label for="query">Pattern to Search:</label>
-                <input type="text" id="query" placeholder="Enter pattern (e.g., AGCT)" value="AGCT">
-            </div>
-            
-            <button onclick="analyzeSequence()" id="analyzeBtn">🔍 Analyze Sequence</button>
-            
-            <div id="results" class="results" style="display: none;">
-                <h3>📊 Analysis Results</h3>
-                <div id="resultsContent"></div>
-            </div>
+    <div class="analyzer">
+        <h2>🔬 Sequence Analyzer</h2>
+        <p>Enter your DNA/RNA sequence and the pattern you want to find:</p>
+        
+        <div class="form-group">
+            <label for="sequence">DNA/RNA Sequence:</label>
+            <textarea id="sequence" rows="4" placeholder="Enter your sequence here (e.g., AGCTAGCTAGCTAGCT)">AGCTAGCTAGCTAGCT</textarea>
         </div>
-    </div>
-
-    <div id="docs" class="tab-content">
-        <h2>📋 API Documentation</h2>
-
-        <div class="endpoint">
-            <h3><span class="method">GET</span> /healthz</h3>
-            <p><strong>Description:</strong> Health check endpoint to verify the API is running.</p>
-            <p><strong>Example:</strong></p>
-            <pre>curl https://rna-analyzer.onrender.com/healthz</pre>
+        
+        <div class="form-group">
+            <label for="query">Pattern to Search:</label>
+            <input type="text" id="query" placeholder="Enter pattern (e.g., AGCT)" value="AGCT">
         </div>
-
-        <div class="endpoint">
-            <h3><span class="method">POST</span> /analyze</h3>
-            <p><strong>Description:</strong> Analyze DNA/RNA sequences for pattern matches.</p>
-            <p><strong>Parameters:</strong></p>
-            <ul>
-                <li><code>sequence</code> - The DNA/RNA sequence to analyze</li>
-                <li><code>query</code> - The pattern to search for</li>
-            </ul>
-            <p><strong>Example Request:</strong></p>
-            <pre>curl -X POST https://rna-analyzer.onrender.com/analyze \
-  -H "Content-Type: application/json" \
-  -d '{"sequence":"AGCTAGCTAGCTAGCT","query":"AGCT"}'</pre>
-            
-            <p><strong>Example Response:</strong></p>
-            <pre>{
-  "sequence_length": 16,
-  "query": "AGCT",
-  "match_count": 4,
-  "match_positions": [1, 5, 9, 13]
-}</pre>
+        
+        <button onclick="analyzeSequence()" id="analyzeBtn">🔍 Analyze Sequence</button>
+        
+        <div id="results" class="results" style="display: none;">
+            <h3>📊 Analysis Results</h3>
+            <div id="resultsContent"></div>
         </div>
-
-        <h2>💡 Use Cases</h2>
-        <ul>
-            <li>Find restriction enzyme cut sites</li>
-            <li>Locate primer binding sites</li>
-            <li>Search for specific motifs</li>
-            <li>Analyze repetitive sequences</li>
-            <li>Bioinformatics research and education</li>
-        </ul>
-
-        <h2>⚡ Powered By</h2>
-        <ul>
-            <li><strong>R</strong> - Statistical computing language</li>
-            <li><strong>Bioconductor</strong> - Bioinformatics packages</li>
-            <li><strong>Biostrings</strong> - Efficient string matching</li>
-            <li><strong>Plumber</strong> - R web API framework</li>
-        </ul>
     </div>
 
     <script>
-        function showTab(tabName) {
-            // Hide all tab contents
-            const contents = document.querySelectorAll('.tab-content');
-            contents.forEach(content => content.classList.remove('active'));
-            
-            // Remove active class from all tabs
-            const tabs = document.querySelectorAll('.tab');
-            tabs.forEach(tab => tab.classList.remove('active'));
-            
-            // Show selected tab content
-            document.getElementById(tabName).classList.add('active');
-            
-            // Add active class to clicked tab
-            event.target.classList.add('active');
-        }
-
         async function analyzeSequence() {
+            console.log('analyzeSequence function called'); // Debug log
+            
             const sequence = document.getElementById('sequence').value.trim();
             const query = document.getElementById('query').value.trim();
             const resultsDiv = document.getElementById('results');
             const resultsContent = document.getElementById('resultsContent');
             const analyzeBtn = document.getElementById('analyzeBtn');
+            
+            console.log('Sequence:', sequence, 'Query:', query); // Debug log
             
             // Validation
             if (!sequence || !query) {
@@ -151,7 +73,9 @@
             resultsContent.innerHTML = '<div>🔄 Analyzing your sequence...</div>';
             
             try {
-                const response = await fetch('/analyze', {
+                console.log('Making fetch request...'); // Debug log
+                
+                const response = await fetch('https://rna-analyzer.onrender.com/analyze', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -162,7 +86,10 @@
                     })
                 });
                 
+                console.log('Response status:', response.status); // Debug log
+                
                 const data = await response.json();
+                console.log('Response data:', data); // Debug log
                 
                 if (response.ok) {
                     // Success - show results
@@ -173,11 +100,6 @@
                             <p><strong>Pattern Searched:</strong> </p>
                             <p><strong>Matches Found:</strong> </p>
                             <p><strong>Match Positions:</strong> </p>
-                            
-                            <h4>📍 Sequence with Matches Highlighted:</h4>
-                            <div style="font-family: monospace; font-size: 14px; background: white; padding: 10px; border-radius: 4px;">
-                                
-                            </div>
                         </div>
                     ;
                 } else {
@@ -185,6 +107,7 @@
                     resultsContent.innerHTML = <div class="error">❌ Error: </div>;
                 }
             } catch (error) {
+                console.error('Fetch error:', error); // Debug log
                 // Network or other error
                 resultsContent.innerHTML = <div class="error">❌ Error: Unable to connect to the API. </div>;
             } finally {
@@ -194,31 +117,7 @@
             }
         }
         
-        function highlightMatches(sequence, pattern, positions) {
-            let highlighted = sequence;
-            const patternLength = pattern.length;
-            
-            // Sort positions in reverse order to avoid index shifting issues
-            const sortedPositions = positions.sort((a, b) => b - a);
-            
-            sortedPositions.forEach(pos => {
-                const start = pos - 1; // Convert to 0-based index
-                const end = start + patternLength;
-                const before = highlighted.substring(0, start);
-                const match = highlighted.substring(start, end);
-                const after = highlighted.substring(end);
-                highlighted = before + <mark style="background: yellow; padding: 1px;"></mark> + after;
-            });
-            
-            return highlighted;
-        }
-        
-        // Allow Enter key to submit
-        document.addEventListener('keypress', function(event) {
-            if (event.key === 'Enter' && (event.target.id === 'sequence' || event.target.id === 'query')) {
-                analyzeSequence();
-            }
-        });
+        console.log('Script loaded successfully'); // Debug log
     </script>
 </body>
 </html>

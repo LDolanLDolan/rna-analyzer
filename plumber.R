@@ -3,13 +3,16 @@ library(plumber)
 library(Biostrings)
 library(jsonlite)
 
-#* Serve the HTML documentation page
+#* Serve the interactive HTML interface
 #* @get /
 #* @serializer html
 function() {
-  # Read and return the HTML file
-  html_content <- readLines("index.html", warn = FALSE)
-  paste(html_content, collapse = "\n")
+  # Read and serve the HTML file directly
+  if (file.exists("index.html")) {
+    readLines("index.html", warn = FALSE) %>% paste(collapse = "\n")
+  } else {
+    "<h1>HTML file not found</h1>"
+  }
 }
 
 #* Health check endpoint
