@@ -1,8 +1,11 @@
 # plumber.R
 
-library(plumber)
-library(Biostrings)
-library(jsonlite)
+suppressPackageStartupMessages({
+  library(plumber)
+  library(Biostrings)
+  library(jsonlite)
+  library(methods)  # Ensure S4 methods like 'width()' work
+})
 
 #* @apiTitle RNA Analyzer API
 
@@ -12,27 +15,27 @@ library(jsonlite)
 function(req, res) {
   tryCatch({
     body <- fromJSON(req$postBody)
-    
+
     sequence <- toupper(body$sequence)
     query <- toupper(body$query)
-    
+
     if (is.null(sequence) || is.null(query) || sequence == "" || query == "") {
       res$status <- 400
       return(list(error = "Both 'sequence' and 'query' must be provided."))
     }
-    
+
     # Perform matching using Biostrings
     subject <- DNAString(sequence)
     pattern <- DNAString(query)
     matches <- matchPattern(pattern, subject)
-    
+
     return(list(
       sequence_length = width(subject),
       query = query,
       match_count = length(matches),
       match_positions = start(matches)
     ))
-    
+
   }, error = function(e) {
     res$status <- 500
     return(list(error = paste("Internal server error:", e$message)))
