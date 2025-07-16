@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -59,27 +59,23 @@
             
             console.log('Sequence:', sequence, 'Query:', query);
             
-            // Validation
             if (!sequence || !query) {
-                resultsContent.innerHTML = '<div class="error">❌ Please enter both sequence and query pattern.</div>';
+                resultsContent.innerHTML = '<div class="error">Please enter both sequence and query pattern.</div>';
                 resultsDiv.style.display = 'block';
                 return;
             }
             
-            // Show loading state
             analyzeBtn.disabled = true;
-            analyzeBtn.textContent = '🔄 Analyzing...';
+            analyzeBtn.textContent = 'Analyzing...';
             resultsDiv.style.display = 'block';
-            resultsContent.innerHTML = '<div>🔄 Analyzing your sequence...</div>';
+            resultsContent.innerHTML = '<div>Analyzing your sequence...</div>';
             
             try {
                 console.log('Making fetch request...');
                 
                 const response = await fetch('https://rna-analyzer.onrender.com/analyze', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         sequence: sequence.toUpperCase(),
                         query: query.toUpperCase()
@@ -87,31 +83,24 @@
                 });
                 
                 console.log('Response status:', response.status);
-                
                 const data = await response.json();
                 console.log('Response data:', data);
                 
                 if (response.ok) {
-                    // Success - show results (FIXED: proper template literal syntax)
-                    resultsContent.innerHTML = 
-                        <div class="success">
-                            <h4>✅ Analysis Complete!</h4>
-                            <p><strong>Sequence Length:</strong>  + data.sequence_length +  nucleotides</p>
-                            <p><strong>Pattern Searched:</strong>  + data.query + </p>
-                            <p><strong>Matches Found:</strong>  + data.match_count + </p>
-                            <p><strong>Match Positions:</strong>  + data.match_positions.join(', ') + </p>
-                        </div>
-                    ;
+                    resultsContent.innerHTML = '<div class="success">' +
+                        '<h4>Analysis Complete!</h4>' +
+                        '<p><strong>Sequence Length:</strong> ' + data.sequence_length + ' nucleotides</p>' +
+                        '<p><strong>Pattern Searched:</strong> ' + data.query + '</p>' +
+                        '<p><strong>Matches Found:</strong> ' + data.match_count + '</p>' +
+                        '<p><strong>Match Positions:</strong> ' + data.match_positions.join(', ') + '</p>' +
+                        '</div>';
                 } else {
-                    // Error from API (FIXED: proper string syntax)
-                    resultsContent.innerHTML = '<div class="error">❌ Error: ' + data.error + '</div>';
+                    resultsContent.innerHTML = '<div class="error">Error: ' + data.error + '</div>';
                 }
             } catch (error) {
                 console.error('Fetch error:', error);
-                // Network or other error (FIXED: proper string syntax)
-                resultsContent.innerHTML = '<div class="error">❌ Error: Unable to connect to the API. ' + error.message + '</div>';
+                resultsContent.innerHTML = '<div class="error">Error: Unable to connect to the API. ' + error.message + '</div>';
             } finally {
-                // Reset button
                 analyzeBtn.disabled = false;
                 analyzeBtn.textContent = '🔍 Analyze Sequence';
             }
